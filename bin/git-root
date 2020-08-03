@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Get path to the root of the git repo
+git_root() {
+  git rev-parse --show-toplevel
+}
+
+git_root

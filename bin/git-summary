@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+LINE_SUMMARY=
+for arg in "$@";
+do
+    case "$arg" in
+        --line)
+            LINE_SUMMARY=1
+            ;;
+        *)
+            set -- "$@" "$arg"
+            ;;
+    esac
+done
+
+cd "$(git root)" || { echo "Can't cd to top level directory";exit 1; }
+
+# Get project name
+project=${PWD##*/}
+
+# Get repo age
+age="$(git log --reverse --format="%ar" | head -n 1)"
+
+# Get commit count
+commits="$(git log --oneline | wc -l)"
+
+# Get total files
+files="$(git ls-files | wc -l)"
+
+# Format authors with percent after
+authors_percent() {
+    awk '
+        { args[NR] = $0; sum += $0 }
+        END {
+            for (i = 1; i <= NR; ++i) {
+                printf "%s♪%2.1f%%\n", args[i], 100 * args[i] / sum
+            }
+        }
+    '  | column -t -s♪
+}
+
+single_file_lines() {
+    while read -r data
+    do
+        if [[ $(file "$data") = *text* ]]; then
+            git blame --line-porcelain "$data" 2>/dev/null | grep "^author\ " | sed -n 's/^author //p';
+        fi
+    done
+}
+
+# Get the lines authors authored
+lines() {
+    git ls-files | single_file_lines
+}
+
+# Count the lines
+line_count() {
+    lines | wc -l
+}
+
+# Get the date of all commits
+date() {
+  git log --pretty='format: %ai' | cut -d ' ' -f 2
+}
+
+# Sum all unqiue dates
+active_days() {
+  date | sort -r | uniq | awk '
+    { sum += 1 }
+    END { print sum }
+  '
+}
+
+# Output
+echo " Project    : $project"
+echo " Repo age   : $age"
+echo " active days: $(active_days)"
+echo " files      : $files"
+
+if [ -n "$LINE_SUMMARY" ]; then
+    echo " lines   : $(lines | wc -l)"
+    echo " authors :"
+    lines | sort | uniq -c | sort -rn | authors_percent
+else
+    echo " Commits    : $commits"
+    echo " authors :"
+    git shortlog -n -s | authors_percent
+fi
