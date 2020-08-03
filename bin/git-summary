@@ -74,15 +74,15 @@ active_days() {
 # Output
 echo " Project    : $project"
 echo " Repo age   : $age"
-echo " active days: $(active_days)"
-echo " files      : $files"
+echo " Active days: $(active_days)"
+echo " Files      : $files"
 
 if [ -n "$LINE_SUMMARY" ]; then
-    echo " lines   : $(lines | wc -l)"
-    echo " authors :"
+    echo " Lines   : $(lines | wc -l)"
+    echo " Authors :"
     lines | sort | uniq -c | sort -rn | authors_percent
 else
     echo " Commits    : $commits"
-    echo " authors :"
+    echo " Authors :"
     git shortlog -n -s | authors_percent
 fi

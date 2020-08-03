@@ -22,6 +22,15 @@ usage: `git summary [--line]`
                 Outputs a summary of the repo by commits
     --line      Outputs a summary of the repo by line
 ```
+
+Project:        Project name  
+Repo age:       Age of the oldest commit  
+Active days:    Sum of days with atleast one commit on them  
+Files:          Total amount of files in the project  
+Commits:        Total amount of commits in a project  
+Lines:          Total amount of lines in a project  
+Authors:        Total lines/commits of the author, author name, percentage contribution
+
 Default summary
 ```
 $ git summary
