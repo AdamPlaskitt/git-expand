@@ -45,7 +45,7 @@ active_hours() {
 }
 
 
-files="$(git ls-files | HEAD -n10)" # Get files
+files="$(git ls-files)" # Get files
 for file in $files
 do
     # Add row to data
