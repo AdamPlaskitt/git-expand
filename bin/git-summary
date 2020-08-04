@@ -22,10 +22,16 @@ project=${PWD##*/}
 age="$(git log --reverse --format="%ar" | head -n 1)"
 
 # Get commit count
-commits="$(git log --oneline | wc -l)"
+commits="$(git log --oneline | awk '
+    { sum += 1 }
+    END { print sum }
+  ')"
 
 # Get total files
-files="$(git ls-files | wc -l)"
+files="$(git ls-files | awk '
+    { sum += 1 }
+    END { print sum }
+  ')"
 
 # Format authors with percent after
 authors_percent() {
@@ -55,7 +61,10 @@ lines() {
 
 # Count the lines
 line_count() {
-    lines | wc -l
+    lines | awk '
+    { sum += 1 }
+    END { print sum }
+  '
 }
 
 # Get the date of all commits
@@ -80,7 +89,7 @@ echo " Activity   : $(activity)"
 echo " Files      : $files"
 
 if [ -n "$LINE_SUMMARY" ]; then
-    echo " Lines      : $(lines | wc -l)"
+    echo " Lines      : $(line_count)"
     echo " Authors    :"
     lines | sort | uniq -c | sort -rn | authors_percent
 else

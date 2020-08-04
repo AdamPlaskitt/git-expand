@@ -10,16 +10,22 @@ dates() {
 
 # Get the commits for a file
 commits() {
-    dates | wc -l
+    dates | awk '
+    { sum += 1 }
+    END { print sum }
+  '
 }
 
 # Get the active hours for a file
 active_hours() {
-    dates | uniq | wc -l
+    dates | uniq | awk '
+    { sum += 1 }
+    END { print sum }
+  '
 }
 
 
-files="$(git ls-files | HEAD -n2)" # Get files
+files="$(git ls-files | HEAD)" # Get files
 for file in $files
 do
     # Add row to data
