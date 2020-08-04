@@ -1,6 +1,26 @@
 #!/usr/bin/env bash
 
-data=()
+ABOVE=0
+while test $# -gt 0;
+do
+    case "$1" in
+        --above)
+            shift
+            if test $# -gt 0;
+            then
+                ABOVE=$1
+            else
+                echo "No limit set"
+                exit
+            fi
+            shift
+            ;;
+        *)
+        break
+        ::
+    esac
+done
+
 max=0
 
 # Get the dates related to a file
@@ -25,7 +45,7 @@ active_hours() {
 }
 
 
-files="$(git ls-files | HEAD)" # Get files
+files="$(git ls-files | HEAD -n10)" # Get files
 for file in $files
 do
     # Add row to data
@@ -42,5 +62,9 @@ printf "  %-${len}s %-10s %s\n" 'path' 'commits' 'active hours'
 
 for file in $files
 do
-    printf "  %-${len}s %-10s %s\n" ${file} $(commits) $(active_hours)
+    total_commits=$(commits)
+    if [ $total_commits -ge $ABOVE ]
+    then
+        printf "  %-${len}s %-10s %s\n" ${file} ${total_commits} $(active_hours)
+    fi
 done
