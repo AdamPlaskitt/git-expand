@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+data=()
+max=0
+
+# Get the dates related to a file
+dates() {
+    git log --pretty='format: %ad' $file | sed 's/ ... //g' | sed 's/:..:..//g' | sed 's/ +.*//g'
+}
+
+# Get the commits for a file
+commits() {
+    dates | wc -l
+}
+
+# Get the active hours for a file
+active_hours() {
+    dates | uniq | wc -l
+}
+
+
+files="$(git ls-files | HEAD -n2)" # Get files
+for file in $files
+do
+    # Add row to data
+    if [ ${#file} -ge $max ]
+    then
+        max=${#file}
+    fi
+done
+
+# Get the length of the max row plus 5
+len=$((max + 5))
+# Output
+printf "  %-${len}s %-10s %s\n" 'path' 'commits' 'active hours'
+
+for file in $files
+do
+    printf "  %-${len}s %-10s %s\n" ${file} $(commits) $(active_hours)
+done
