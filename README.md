@@ -23,23 +23,25 @@ usage: `git summary [--line]`
     --line      Outputs a summary of the repo by line
 ```
 
-Project:        Project name  
-Repo age:       Age of the oldest commit  
-Active days:    Sum of days with atleast one commit on them  
-Files:          Total amount of files in the project  
-Commits:        Total amount of commits in a project  
-Lines:          Total amount of lines in a project  
-Authors:        Total lines/commits of the author, author name, percentage contribution
+|||
+|---|---|
+|Project|Project name|  
+|Repo age|Age of the oldest commit|  
+|Activity|Sum of unique hours with commits in|  
+|Files|Total amount of files in the project|  
+|Commits|Total amount of commits in a project|  
+|Lines|Total amount of lines in a project|  
+|Authors|Total lines/commits of the author, author name, percentage contribution|
 
 Default summary
 ```
 $ git summary
  Project    : CCRPG
  Repo age   : 5 years ago
- active days: 46
- files      : 63
+ Activity   : 83 hours
+ Files      : 63
  Commits    : 192
- authors :
+ Authors :
    143  Alex                 74.5%
     23  Adam                 12.0%
     12  tvmanboy             6.2%
@@ -54,10 +56,10 @@ Summary by line
 $ git summary --line
  Project    : CCRPG
  Repo age   : 5 years ago
- active days: 46
- files      : 63
- lines   : 4197
- authors :
+ Activity   : 83 hours
+ Files      : 63
+ Lines   : 4197
+ Authors :
    3339 Alex           79.6%
     717 Adam           17.1%
      77 tvmanboy       1.8%

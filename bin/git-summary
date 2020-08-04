@@ -60,29 +60,31 @@ line_count() {
 
 # Get the date of all commits
 date() {
-  git log --pretty='format: %ai' | cut -d ' ' -f 2
+  git log --pretty='format: %ai' | cut -d ' ' -f 2,3 | cut -d ':' -f 1
+}
+
+active_hours() {
+    date | sort -r | uniq | wc -l
 }
 
 # Sum all unqiue dates
-active_days() {
-  date | sort -r | uniq | awk '
-    { sum += 1 }
-    END { print sum }
-  '
+activity() {
+    total=$(active_hours)
+    echo "$total hours"
 }
 
 # Output
 echo " Project    : $project"
 echo " Repo age   : $age"
-echo " Active days: $(active_days)"
+echo " Activity   : $(activity)"
 echo " Files      : $files"
 
 if [ -n "$LINE_SUMMARY" ]; then
-    echo " Lines   : $(lines | wc -l)"
-    echo " Authors :"
+    echo " Lines      : $(lines | wc -l)"
+    echo " Authors    :"
     lines | sort | uniq -c | sort -rn | authors_percent
 else
     echo " Commits    : $commits"
-    echo " Authors :"
+    echo " Authors    :"
     git shortlog -n -s | authors_percent
 fi
