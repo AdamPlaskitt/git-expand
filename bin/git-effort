@@ -92,6 +92,6 @@ fi
 
 echo -e "path ; commits ; active hours" | cat - $tmpfile > $tmpout
 
-cat $tmpout | column -t -s";"
+cat $tmpout | column -t -s";" | less -X
 
 rm "$tmpfile" "$tmpout"
