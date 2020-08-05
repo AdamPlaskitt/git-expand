@@ -8,6 +8,7 @@ Download or clone the repo and add the path to the bin folder to `PATH`. (Or cop
 All commands are prefaced with git. e.g. `git root`
 - [git-author](#git_author)
 - [git-back](#git_back)
+- [git-contrib](#git_contrib)
 - [git-effort](#git_effort)
 - [git root](#git_root)
 - [git summary](#git_summary)
@@ -29,6 +30,13 @@ usage: `git back <jumps>`
 ```
                 Undos the last commit to the staging area
     <jumps>     Undos the last 'jumps' commits to the staging area
+```
+
+### git contrib
+usage: `git contrib <author>`
+```
+                Lists the short commit history of the provided author, ignoring
+                merge commits
 ```
 
 ### git effort
