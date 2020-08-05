@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+ABOVE=0
+H=0
+AUTHOR=""
+while test $# -gt 0;
+do
+    case "$1" in
+        --above)
+            shift
+            if test $# -gt 0;
+            then
+                ABOVE=$1
+            else
+                echo "No limit set"
+                exit
+            fi
+            shift
+            ;;
+        -h)
+           H=1
+           shift
+           ;;
+        --author)
+            shift
+            if test $# -gt 0;
+            then
+                AUTHOR=$1
+            else
+                echo "No author provided"
+                exit
+            fi
+            shift
+            ;;
+        *)
+        break
+        ::
+    esac
+done
+
+# Get the dates related to a file
+dates() {
+    git log --author=$AUTHOR --pretty='format: %ad' $file 2>/dev/null | sed 's/ ... //g' | sed 's/:..:..//g' | sed 's/ +.*//g'
+}
+
+# Get the commits for a file
+commits() {
+    dates | awk '
+    { sum += 1 }
+    END { print sum }
+  '
+}
+
+# Get the active hours for a file
+active_hours() {
+    dates | uniq | awk '
+    { sum += 1 }
+    END { print sum }
+  '
+}
+
+tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
+tmpout=$(mktemp /tmp/abc-script.XXXXXX)
+max=0
+files="$(git ls-files)" # Get files
+for file in $files
+do
+    total_commits=$(commits)
+    total_hours=$(active_hours)
+
+    limit=$total_commits
+    if [[ $H -gt 0 ]]
+    then
+        limit=$total_hours
+    fi
+
+    if [[ $limit -gt $ABOVE ]]
+    then
+        printf "${file} ; ${total_commits} ; ${total_hours}\n" >> $tmpfile
+    fi   
+done
+
+
+if [[ $H -gt 0 ]]
+then
+    # hours
+    sort --field-separator=';' -k3nr -k2nr -o $tmpfile $tmpfile
+else
+    # commits
+    sort --field-separator=';' -k2nr -k3nr -o $tmpfile $tmpfile
+fi
+
+echo -e "path ; commits ; active hours" | cat - $tmpfile > $tmpout
+
+cat $tmpout | column -t -s";"
+
+rm "$tmpfile" "$tmpout"
