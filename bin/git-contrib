@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+USER="$*"
+
+if [ -z "$USER" ]
+then
+    echo "user name is required"
+    exit
+fi
+
+git shortlog --author="$USER"
