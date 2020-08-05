@@ -60,6 +60,7 @@ active_hours() {
 }
 
 tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
+tmpout=$(mktemp /tmp/abc-script.XXXXXX)
 max=0
 files="$(git ls-files)" # Get files
 for file in $files
@@ -75,26 +76,10 @@ do
 
     if [[ $limit -gt $ABOVE ]]
     then
-        # Add row to data
-        if [[ ${#file} -ge $max ]]
-        then
-            max=${#file}
-        fi
-        printf "${file};${total_commits};${total_hours}\n" >> $tmpfile
+        printf "${file} ; ${total_commits} ; ${total_hours}\n" >> $tmpfile
     fi   
 done
 
-# Get the length of the max row plus 5
-len=$((max + 5))
-# Output
-printf "  %-${len}s %-10s %s\n" 'path' 'commits' 'active hours'
-
-
-
-#if [[ $limit -gt $ABOVE ]]
-#    then
-#        printf "  %-${len}s %-10s %s\n" ${file} ${total_commits} ${total_hours}
-#    fi
 
 if [[ $H -gt 0 ]]
 then
@@ -105,6 +90,8 @@ else
     sort --field-separator=';' -k2nr -k3nr -o $tmpfile $tmpfile
 fi
 
-cat $tmpfile
+echo -e "path ; commits ; active hours" | cat - $tmpfile > $tmpout
 
-rm "$tmpfile"
+cat $tmpout | column -t -s";"
+
+rm "$tmpfile" "$tmpout"
