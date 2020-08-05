@@ -6,11 +6,34 @@ Download or clone the repo and add the path to the bin folder to `PATH`. (Or cop
 
 ## Commands
 All commands are prefaced with git. e.g. `git root`
+- [git-author](#git_author)
+- [git-effort](#git_effort)
 - [git root](#git_root)
 - [git summary](#git_summary)
-- [git-effort](#git_effort)
+
 
 ---
+
+### git author
+usage: `git author [--no-email]`
+```
+                Lists all authors and their email address that have contributed 
+                to the project
+    --no-email  Lists all authors connected to a project without their email
+                address
+```
+
+### git effort
+usage: `git effort [-h] [--above <int>] [--author <name>]`
+```
+                Lists: files, commits to the files, active hours on file.
+                Ordered by the target type: default commits
+    -h          Changes target type to active hours
+    --above <int>
+                Only lists entires with target type above int
+    --author <name>
+                Only registory commits and active hours from the provided author
+```
 
 ### git root
 usage: `git root`
@@ -69,16 +92,4 @@ $ git summary --line
      50 Peguin666      1.2%
       9 Adam Hawley    0.2%
       5 Adam Plaskitt  0.1%
-```
-
-### git effort
-usage: `git effort [-h] [--above <int>] [--author <name>]`
-```
-                Lists: files, commits to the files, active hours on file.
-                Ordered by the target type: default commits
-    -h          Changes target type to active hours
-    --above <int>
-                Only lists entires with target type above int
-    --author <name>
-                Only registory commits and active hours from the provided author
 ```

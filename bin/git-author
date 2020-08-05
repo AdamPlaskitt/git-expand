@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+EMAIL=true
+while test $# -gt 0;
+do
+    case "$1" in
+        --no-email)
+            EMAIL=false
+            shift
+            ;;
+        *)
+        break
+        ::
+    esac
+done
+
+if $EMAIL;
+then
+    git shortlog -sne | awk '{$1=""; sub(" ", ""); print}' | awk -F'<' '!x[$1]++' | awk -F'<' '!x[$2]++'
+else
+    echo test
+    git shortlog -sne | awk '{$1=""; sub(" ", ""); print}' | awk -F'<' '!x[$1]++' | awk -F'<' '!x[$2]++' | awk -F'<' '{gsub(/ +$/, "", $1); print $1}'
+fi
