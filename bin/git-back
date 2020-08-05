@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+JUMP=1
+if test $# -gt 0;
+then
+    [[ $1 =~ ^[0-9]*$ ]] && JUMP=$1 || echo "A non number was entered"; exit 
+fi
+
+git reset --soft HEAD~$JUMP
