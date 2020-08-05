@@ -8,7 +8,7 @@ Download or clone the repo and add the path to the bin folder to `PATH`. (Or cop
 All commands are prefaced with git. e.g. `git root`
 - [git root](#git_root)
 - [git summary](#git_summary)
-- [git-effort])#git_effort)
+- [git-effort](#git_effort)
 
 ---
 
