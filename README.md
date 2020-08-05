@@ -9,6 +9,7 @@ All commands are prefaced with git. e.g. `git root`
 - [git root](#git_root)
 - [git summary](#git_summary)
 - [git-effort](#git_effort)
+- [git-author](#git_author)
 
 ---
 
@@ -81,4 +82,13 @@ usage: `git effort [-h] [--above <int>] [--author <name>]`
                 Only lists entires with target type above int
     --author <name>
                 Only registory commits and active hours from the provided author
+```
+
+### git author
+usage: `git author [--no-email]`
+```
+                Lists all authors and their email address that have contributed 
+                to the project
+    --no-email  Lists all authors connected to a project without their email
+                address
 ```
