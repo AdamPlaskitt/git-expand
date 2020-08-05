@@ -7,6 +7,7 @@ Download or clone the repo and add the path to the bin folder to `PATH`. (Or cop
 ## Commands
 All commands are prefaced with git. e.g. `git root`
 - [git-author](#git_author)
+- [git-back](#git_back)
 - [git-effort](#git_effort)
 - [git root](#git_root)
 - [git summary](#git_summary)
@@ -21,6 +22,13 @@ usage: `git author [--no-email]`
                 to the project
     --no-email  Lists all authors connected to a project without their email
                 address
+```
+
+### git back
+usage: `git back <jumps>`
+```
+                Undos the last commit to the staging area
+    <jumps>     Undos the last 'jumps' commits to the staging area
 ```
 
 ### git effort
